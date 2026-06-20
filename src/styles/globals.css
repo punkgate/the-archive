@@ -1,0 +1,255 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   THE ARCHIVE — Design System
+   Palette:
+   --ink:        #0A0A0A   deep black (page bg)
+   --surface:    #111111   entry background
+   --surface-2:  #1A1A1A   elevated surfaces
+   --border:     #242424   hairline borders
+   --border-2:   #303030   stronger borders
+   --amber:      #8B7355   aged amber (accent)
+   --parchment:  #C4A882   warm parchment (secondary text)
+   --paper:      #E8E0D0   near-paper (primary text)
+   --ghost:      #4A4A4A   ghost text / placeholders
+   Typography:
+   --font-display: 'Cormorant Garamond'
+   --font-body:    'Inter'
+   --font-mono:    'IBM Plex Mono'
+   ============================================================ */
+
+:root {
+  --ink: #0A0A0A;
+  --surface: #111111;
+  --surface-2: #1A1A1A;
+  --border: #242424;
+  --border-2: #303030;
+  --amber: #8B7355;
+  --amber-light: #A68A66;
+  --parchment: #C4A882;
+  --paper: #E8E0D0;
+  --ghost: #4A4A4A;
+  --danger: #8B3A3A;
+
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Courier New', monospace;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-body);
+  font-weight: 300;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ============================================================
+   SCROLLBAR — subtle archival style
+   ============================================================ */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--surface);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-2);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ghost);
+}
+
+/* ============================================================
+   TYPOGRAPHY
+   ============================================================ */
+.font-display {
+  font-family: var(--font-display);
+}
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* ============================================================
+   SELECTION
+   ============================================================ */
+::selection {
+  background: rgba(139, 115, 85, 0.35);
+  color: var(--paper);
+}
+
+/* ============================================================
+   EDITOR — The manuscript canvas
+   ============================================================ */
+.archive-editor {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.85;
+  color: var(--paper);
+  caret-color: var(--amber);
+  outline: none;
+  min-height: 60vh;
+}
+
+.archive-editor:empty::before {
+  content: attr(data-placeholder);
+  color: var(--ghost);
+  font-style: italic;
+  pointer-events: none;
+}
+
+/* Entity annotations inside editor */
+.archive-editor [data-annotation] {
+  border-bottom: 1px solid var(--amber);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.archive-editor [data-annotation]:hover {
+  background: rgba(139, 115, 85, 0.12);
+}
+.archive-editor [data-annotation="character"] {
+  border-bottom-color: #7A8B9A;
+}
+.archive-editor [data-annotation="place"] {
+  border-bottom-color: #5A7A5A;
+}
+.archive-editor [data-annotation="theme"] {
+  border-bottom-color: #8B7355;
+}
+.archive-editor [data-annotation="concept"] {
+  border-bottom-color: #7A5A8B;
+}
+
+/* V2 Symbol highlighting */
+.entity-symbol-theme   { color: var(--amber); opacity: 0.8; }
+.entity-symbol-char    { color: #7A8B9A; opacity: 0.8; }
+.entity-symbol-place   { color: #5A7A5A; opacity: 0.8; }
+
+/* ============================================================
+   FILM LEADER — signature left-edge strip
+   ============================================================ */
+.film-leader {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--amber) 0px,
+    var(--amber) 4px,
+    transparent 4px,
+    transparent 12px
+  );
+  opacity: 0.4;
+  pointer-events: none;
+  z-index: 100;
+}
+
+/* ============================================================
+   GRAIN OVERLAY — atmosphere
+   ============================================================ */
+.grain-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
+}
+
+/* ============================================================
+   ENTRY IMAGE — pasted photograph style
+   ============================================================ */
+.archive-photo {
+  display: block;
+  max-width: 100%;
+  border: 1px solid var(--border-2);
+  box-shadow:
+    0 1px 2px rgba(0,0,0,0.5),
+    0 4px 12px rgba(0,0,0,0.4),
+    inset 0 0 0 1px rgba(255,255,255,0.03);
+  margin: 2rem auto;
+  position: relative;
+}
+
+.archive-photo-caption {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--ghost);
+  text-align: center;
+  margin-top: 0.5rem;
+  letter-spacing: 0.08em;
+}
+
+/* ============================================================
+   ANNOTATION POPUP — V3
+   ============================================================ */
+.annotation-popup {
+  background: var(--surface-2);
+  border: 1px solid var(--border-2);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+}
+
+/* ============================================================
+   ENTITY PILL
+   ============================================================ */
+.entity-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.15rem 0.5rem;
+  border: 1px solid var(--border-2);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--parchment);
+  background: var(--surface-2);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+.entity-pill:hover {
+  border-color: var(--amber);
+  color: var(--amber-light);
+}
+.entity-pill--theme   { border-left-color: var(--amber); }
+.entity-pill--character { border-left-color: #7A8B9A; }
+.entity-pill--place   { border-left-color: #5A7A5A; }
+.entity-pill--concept { border-left-color: #7A5A8B; }
+
+/* ============================================================
+   HAIRLINE DIVIDERS
+   ============================================================ */
+.hairline {
+  border: none;
+  border-top: 1px solid var(--border);
+}
+
+/* ============================================================
+   MOTION
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
